@@ -1,0 +1,56 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Node / CDK
+node_modules/
+cdk.out/
+**/cdk.out/
+*.tsbuildinfo
+*.js.map
+package-lock.json
+.next/
+ui/out/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+dist/
+build/
+
+# IDE
+.cache/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Secrets / local config
+.env
+.env.local
+!.env.example
+!.env.local.example
+
+# Logs
+*.log
+
+# Docker
+docker-compose.override.yaml
+notes.txt
+
+# CDK outputs / context (contain account-specific data)
+cdk-outputs.json
+cdk.context.json
+
+# Bedrock AgentCore config (contains account-specific data)
+.bedrock_agentcore.yaml
+
+#PCSR scan
+.ash
+.threatmodel
+
