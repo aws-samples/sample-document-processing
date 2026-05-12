@@ -1,6 +1,6 @@
 # UI — Presentation & Ingestion Layer
 
-React + Next.js web application (codename: Sirisha), deployed as a static site to S3 + CloudFront.
+React + Next.js web application (codename: DocPro), deployed as a static site to S3 + CloudFront.
 
 ## Structure
 

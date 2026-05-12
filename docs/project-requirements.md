@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-The Document Processing Platform (codename: **Sirisha**) enables customers to upload PDF documents, which are then scanned for security threats, intelligently processed by AI agents to extract structured data, and presented in a review interface for human approval.
+The Document Processing Platform (codename: **DocPro**) enables customers to upload PDF documents, which are then scanned for security threats, intelligently processed by AI agents to extract structured data, and presented in a review interface for human approval.
 
 ## 2. Business Requirements
 

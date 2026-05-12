@@ -6,7 +6,7 @@ import theme from '@/theme';
 import AppHeader from '@/components/AppHeader';
 
 export const metadata: Metadata = {
-  title: 'Sirisha - Document Processing',
+  title: 'DocPro - Document Processing',
   description: 'Upload, process, and review documents with AI-powered extraction.',
 };
 

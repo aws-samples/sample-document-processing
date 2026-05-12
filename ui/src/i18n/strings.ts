@@ -6,7 +6,7 @@
 
 const strings = {
   // App Header
-  appName: 'Sirisha',
+  appName: 'DocPro',
   appSubtitle: 'Document Processing',
 
   // Home Page

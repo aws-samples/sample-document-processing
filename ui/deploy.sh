@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 echo "============================================"
-echo "  Sirisha — UI Deployment"
+echo "  DocPro — UI Deployment"
 echo "============================================"
 
 # Check prerequisites

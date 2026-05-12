@@ -126,7 +126,30 @@ Deploy:
 cd llm-gateway/infra && npm install && npx cdk deploy --all
 ```
 
-After deploy, note the ALB DNS name from the CDK output (`AlbDnsName`) — the supervisor agent needs it.
+After deploy, note the ALB DNS name from the CDK output (`AlbDnsName`) — the supervisor agent needs it. Also note the CloudFront domain from `CloudFrontDomain` — you'll use it to access the LiteLLM dashboard.
+
+#### Accessing the LiteLLM Dashboard
+
+LiteLLM provides a built-in admin dashboard for monitoring model usage, managing API keys, and viewing spend tracking.
+
+| Environment | URL | Credentials |
+|-------------|-----|-------------|
+| **Local** (Docker Compose) | `http://localhost:4000/ui` | `UI_USERNAME` / `UI_PASSWORD` from `llm-gateway/.env` |
+| **Production** (ECS Fargate) | `https://<CloudFrontDomain>/ui` | Stored in AWS Secrets Manager (`document-processing/llm-gateway/ui-credentials`) |
+
+To get the CloudFront URL after deploying:
+
+```bash
+# From CDK output
+cd llm-gateway/infra && cat cdk-outputs.json | grep CloudFrontDomain
+```
+
+From the dashboard you can:
+
+- View model usage and spend per API key
+- Monitor request logs and latency
+- Create and manage virtual API keys for different consumers
+- Check model health and routing status
 
 ### Step 5: Supervisor agent
 
