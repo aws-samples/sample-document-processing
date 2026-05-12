@@ -214,6 +214,21 @@ cd ui && npm install && npm run build
 cd infra && npm install && npx cdk deploy
 ```
 
+#### Accessing the UI
+
+| Environment | URL | How to get it |
+|-------------|-----|---------------|
+| **Local** (development) | `http://localhost:3000` | Run `npm run dev` from the `ui/` directory |
+| **Production** (CloudFront) | `https://<CloudFrontDomain>` | From UI CDK output (`CloudFrontDomain`) |
+
+To get the production URL after deploying:
+
+```bash
+cd ui/infra && cat cdk-outputs.json | grep CloudFrontDomain
+```
+
+The UI connects to the backend REST API and WebSocket endpoints configured in `ui/.env.local`. Make sure the backend (Step 3) is deployed and the environment variables `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_WS_URL` are set before building.
+
 ### Configuration reference files
 
 Each subproject includes example configuration files with placeholder values:
