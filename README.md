@@ -6,6 +6,11 @@ An AI-powered document processing platform that extracts structured data from PD
 
 ![Architecture Diagram](docs/docprocessing_architecture.png)
 
+## Demo
+
+
+[▶️ Watch the demo recording](docs/sample-document-processing.mp4)
+
 ## Architecture
 
 The platform is organized into four layers:
