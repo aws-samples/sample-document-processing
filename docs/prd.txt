@@ -1,0 +1,35 @@
+The Document Processing Platform:
+Refer to the policy-injection-docprocessing/docs/pij_architecture-architecture_v1.0.png diagram and lay out requirements for a platform based on the following:
+
+Business Requirement:
+Customers upload pdf documents, the document contents are scanned and further extracted and displayed in a form/page for review and approval.
+
+Detailed Requirements:
+UI:
+Home Page : 1 section to to upload pdf documents, web app receives the s3 signed url to upload the document to s3
+Home page: 2 section to show list of documents uploaded with customer name, document name, created on, updated on, status : Queued, Processing, In Review, Rejected, Approved
+Review Page: Open the document details in this page when the user clicks the document item link in the home page to review/approve the document.
+
+Backend:
+Lambda/API Gateway:
+request_signedurl lambda and api gateway: once the user uploads the document, the lambda should create a entry in the database for the send the presigned url for s3 upload
+API Gateway: trigger the work flow to process the document.
+
+
+Workflow Orchestration:
+UI triggers the step functions work flow via api gateway.
+step 1: trigger the gaurd duty scan on the uploaded doc and wait for the result
+step 2: if gaurd duty scan passed trigger step 3 for further Processing, if status is failed then trigger step 4 to send out notification to ui via websocket.
+
+step 3.1: extra document fields from xls
+step 3.2: extract ssm parameters for logically chunking the pdf
+step 4: invoke supervsior agent with inputs from step 3.1 and 3.2
+step 5: upload the final result json from step 4 to s3 and update status to DB
+step 6: notify the ui via websocket api of the uploaded json object s3 path
+
+Agents:
+The supervisor agent delegates tasks to sub agents (chunking, extraction, mapping, validation agents). all the sub agents report to supervisor once their tasks are complete. supervsior agent decides to which agent the next task to be deledated to. Once the subagents successfully complete the work, it writes the final resulting json to S3 and returns control to workflow processor.
+chunking agent: accepts the ssm parameter for chunk_size in MB and pages_per_chunk and create logical chunks of the pdf to avoid reaching the context window of models.
+extraction agents: Multiple Extraction agents extract data based on the fields passed by the supervisor agent and chunk details and writes to a temporary json file and returns to supervisor agent.
+mapping agent: supervisor passes the field information, output json schema and json chunks to create the final json object.
+validation agent: validates the final json object against the output json schema and fixes any mistakes.

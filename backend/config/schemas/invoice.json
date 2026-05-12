@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "vendor": {
+      "type": "object",
+      "description": "The company that ISSUED the invoices (the sender/seller) — shared across all invoices",
+      "properties": {
+        "name": { "type": "string" },
+        "address": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string", "description": "State, province, or region" },
+        "zip": { "type": "string", "description": "Postal or ZIP code" },
+        "phone": { "type": "string" },
+        "email": { "type": "string", "format": "email" }
+      },
+      "required": ["name"]
+    },
+    "invoices": {
+      "type": "array",
+      "description": "Array of invoices extracted from the document. A PDF may contain one or many invoices from the same vendor.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "invoiceNumber": { "type": "string" },
+          "invoiceDate": { "type": "string", "format": "date" },
+          "dueDate": { "type": "string", "format": "date" },
+          "paymentTerms": { "type": "string" },
+          "purchaseOrder": { "type": "string" },
+          "billTo": {
+            "type": "object",
+            "description": "The party RECEIVING the bill (the buyer) — from the Bill To section",
+            "properties": {
+              "name": { "type": "string" },
+              "attention": { "type": "string" },
+              "address": { "type": "string" },
+              "city": { "type": "string" },
+              "state": { "type": "string", "description": "State, province, or region" },
+              "zip": { "type": "string", "description": "Postal or ZIP code" }
+            },
+            "required": ["name", "address"]
+          },
+          "shipTo": {
+            "type": "object",
+            "description": "The party RECEIVING the shipment — from the Ship To section",
+            "properties": {
+              "name": { "type": "string" },
+              "address": { "type": "string" },
+              "city": { "type": "string" },
+              "state": { "type": "string", "description": "State, province, or region" },
+              "zip": { "type": "string", "description": "Postal or ZIP code" }
+            }
+          },
+          "lineItems": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "lineNumber": { "type": "integer" },
+                "description": { "type": "string" },
+                "sku": { "type": "string", "description": "Product code extracted from description (e.g. A-100)" },
+                "quantity": { "type": "integer" },
+                "unitPrice": { "type": "number" },
+                "taxPercent": { "type": "number" },
+                "taxExempt": { "type": "boolean" },
+                "amount": { "type": "number" }
+              },
+              "required": ["lineNumber", "description", "quantity", "unitPrice", "amount"]
+            }
+          },
+          "subtotal": { "type": "number" },
+          "taxRate": { "type": "number" },
+          "taxAmount": { "type": "number" },
+          "shipping": { "type": "number" },
+          "totalDue": { "type": "number" },
+          "notes": { "type": "string" }
+        },
+        "required": ["invoiceNumber", "invoiceDate", "billTo", "lineItems", "subtotal", "totalDue"]
+      }
+    },
+    "wireTransfer": {
+      "type": "object",
+      "description": "Wire transfer payment details — shared across all invoices",
+      "properties": {
+        "bankName": { "type": "string" },
+        "accountName": { "type": "string" },
+        "accountNumber": { "type": "string" },
+        "routingNumber": { "type": "string" },
+        "swiftCode": { "type": "string" }
+      }
+    }
+  },
+  "required": ["vendor", "invoices"]
+}

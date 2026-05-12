@@ -1,0 +1,16 @@
+{
+  "DocProcessingVpcStack": {
+    "PrivateSubnetIds": "subnet-XXXXXXXXXXXXXXXXX,subnet-XXXXXXXXXXXXXXXXX",
+    "PublicSubnetIds": "subnet-XXXXXXXXXXXXXXXXX,subnet-XXXXXXXXXXXXXXXXX",
+    "ExportsOutputFnGetAttVpcCidrBlock": "10.0.0.0/22",
+    "VpcId": "vpc-XXXXXXXXXXXXXXXXX",
+    "VpcCidr": "10.0.0.0/22",
+    "ExportsOutputRefVpc": "vpc-XXXXXXXXXXXXXXXXX"
+  },
+  "DocProcessingSecurityGroupsStack": {
+    "AuroraDbSgId": "sg-XXXXXXXXXXXXXXXXX",
+    "AlbInternalSgId": "sg-XXXXXXXXXXXXXXXXX",
+    "EcsSgId": "sg-XXXXXXXXXXXXXXXXX",
+    "AlbExternalSgId": "sg-XXXXXXXXXXXXXXXXX"
+  }
+}

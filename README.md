@@ -94,30 +94,7 @@ cd backend/infra && npm install && npx cdk deploy --all
 
 After deploy, note the REST API and WebSocket URLs from the CDK outputs — you'll need them for the UI.
 
-### Step 4: Workflow orchestration
-
-```bash
-cp workflow/.env.example workflow/.env
-```
-
-Edit `workflow/.env`:
-
-| Variable | Description | How to get it |
-|----------|-------------|---------------|
-| `AWS_REGION` | AWS region | `us-east-1` |
-| `DOCUMENT_BUCKET` | S3 bucket | `document-processing-<YOUR_AWS_ACCOUNT_ID>` |
-| `AGENT_RUNTIME_ARN` | AgentCore supervisor ARN | From AgentCore after deploying the agent (Step 6) |
-| `DOCUMENTS_TABLE` | DynamoDB table | Default: `DocumentProcessing-Documents` |
-| `TASK_TOKEN_TABLE` | Scan task token table | Default: `DocumentProcessing-ScanTaskTokens` |
-| `NOTIFY_FUNCTION_ARN` | Backend notify Lambda ARN | From backend CDK output (`NotifyFunctionArn`) |
-
-Deploy:
-
-```bash
-cd workflow/infra && npm install && npx cdk deploy --all
-```
-
-### Step 5: LLM Gateway
+### Step 4: LLM Gateway
 
 ```bash
 cp llm-gateway/.env.example llm-gateway/.env
@@ -151,7 +128,7 @@ cd llm-gateway/infra && npm install && npx cdk deploy --all
 
 After deploy, note the ALB DNS name from the CDK output (`AlbDnsName`) — the supervisor agent needs it.
 
-### Step 6: Supervisor agent
+### Step 5: Supervisor agent
 
 ```bash
 cp agents/supervisor/.env.example agents/supervisor/.env
@@ -164,12 +141,35 @@ Edit `agents/supervisor/.env`:
 | `AWS_REGION` | AWS region | `us-east-1` |
 | `AWS_ACCOUNT_ID` | Your AWS account ID | Your 12-digit account ID |
 | `LLM_GATEWAY_URL` | Internal ALB endpoint for the LLM Gateway | From LLM Gateway CDK output (`AlbDnsName`), prefixed with `http://` (internal VPC traffic) |
-| `LLM_GATEWAY_API_KEY` | Gateway API key (local dev only) | The `LITELLM_ADMIN_KEY` you generated in Step 5 |
+| `LLM_GATEWAY_API_KEY` | Gateway API key (local dev only) | The `LITELLM_ADMIN_KEY` you generated in Step 4 |
 | `LLM_GATEWAY_API_KEY_SECRET_ARN` | Secrets Manager ARN for the API key (production) | From LLM Gateway CDK output (`MasterKeySecretArn`) |
 
 In production on AgentCore, the agent reads the API key from AWS Secrets Manager instead of the environment variable. The secret is created automatically by the LLM Gateway CDK stack (`document-processing/llm-gateway/admin-key`). Set the `LLM_GATEWAY_API_KEY_SECRET_ARN` environment variable to the ARN from the CDK output.
 
 Deploy to AgentCore — see [agents/README.md](agents/README.md) for full instructions.
+
+### Step 6: Workflow orchestration
+
+```bash
+cp workflow/.env.example workflow/.env
+```
+
+Edit `workflow/.env`:
+
+| Variable | Description | How to get it |
+|----------|-------------|---------------|
+| `AWS_REGION` | AWS region | `us-east-1` |
+| `DOCUMENT_BUCKET` | S3 bucket | `document-processing-<YOUR_AWS_ACCOUNT_ID>` |
+| `AGENT_RUNTIME_ARN` | AgentCore supervisor ARN | From AgentCore after deploying the agent (Step 5) |
+| `DOCUMENTS_TABLE` | DynamoDB table | Default: `DocumentProcessing-Documents` |
+| `TASK_TOKEN_TABLE` | Scan task token table | Default: `DocumentProcessing-ScanTaskTokens` |
+| `NOTIFY_FUNCTION_ARN` | Backend notify Lambda ARN | From backend CDK output (`NotifyFunctionArn`) |
+
+Deploy:
+
+```bash
+cd workflow/infra && npm install && npx cdk deploy --all
+```
 
 ### Step 7: UI
 
@@ -212,9 +212,9 @@ Stacks have cross-stack dependencies. Deploy in this order:
 ```
 1. vpc/infra          → VPC, subnets, security groups
 2. backend/infra      → API Gateway, Lambda, DynamoDB, S3
-3. workflow/infra     → Step Functions, EventBridge, GuardDuty integration
-4. llm-gateway/infra  → Aurora, ECS Fargate, ALB
-5. agents/supervisor  → AgentCore deployment
+3. llm-gateway/infra  → Aurora, ECS Fargate, ALB
+4. agents/supervisor  → AgentCore deployment
+5. workflow/infra     → Step Functions, EventBridge, GuardDuty integration
 6. ui/infra           → S3 static site, CloudFront
 ```
 
@@ -260,9 +260,9 @@ To avoid ongoing charges, destroy all infrastructure in **reverse deployment ord
 
 ```
 1. ui/infra/destroy.sh            → CloudFront, S3, KMS key
-2. agents/supervisor              → Delete AgentCore agent (via CLI or console)
-3. llm-gateway/infra/destroy.sh   → ECS Fargate, ALB, Aurora, Secrets Manager
-4. workflow/infra/destroy.sh      → Step Functions, EventBridge, Lambda
+2. workflow/infra/destroy.sh      → Step Functions, EventBridge, Lambda
+3. agents/supervisor              → Delete AgentCore agent (via CLI or console)
+4. llm-gateway/infra/destroy.sh   → ECS Fargate, ALB, Aurora, Secrets Manager
 5. backend/infra/destroy.sh       → API Gateway, Lambda, DynamoDB
 6. backend/infra/destroy-s3.sh    → Document S3 bucket + KMS CMK (interactive — prompts for confirmation)
 7. vpc/infra/destroy.sh           → VPC, subnets, NAT Gateway, security groups (MUST be last)
@@ -274,15 +274,15 @@ To avoid ongoing charges, destroy all infrastructure in **reverse deployment ord
 # 1. UI
 cd ui/infra && ./destroy.sh
 
-# 2. AgentCore agent (manual — no CDK stack)
+# 2. Workflow
+cd workflow/infra && ./destroy.sh
+
+# 3. AgentCore agent (manual — no CDK stack)
 # Delete via the AgentCore console or CLI:
 #   aws bedrock-agentcore delete-agent-runtime --agent-runtime-id <AGENT_ID>
 
-# 3. LLM Gateway
+# 4. LLM Gateway
 cd llm-gateway/infra && ./destroy.sh
-
-# 4. Workflow
-cd workflow/infra && ./destroy.sh
 
 # 5. Backend APIs
 cd backend/infra && ./destroy.sh

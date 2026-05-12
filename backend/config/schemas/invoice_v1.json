@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": { "type": "string" },
+    "invoice_date": { "type": "string", "format": "date" },
+    "vendor_name": { "type": "string" },
+    "vendor_code": { "type": "string" },
+    "total_amount": { "type": "number" },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": { "type": "string" },
+          "quantity": { "type": "integer" },
+          "unit_price": { "type": "number" }
+        },
+        "required": ["description", "quantity", "unit_price"]
+      }
+    }
+  },
+  "required": ["invoice_number", "invoice_date", "vendor_name", "total_amount", "line_items"]
+}

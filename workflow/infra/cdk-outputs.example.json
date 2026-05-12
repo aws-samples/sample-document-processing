@@ -1,0 +1,7 @@
+{
+  "DocProcessingWorkflowStack": {
+    "StateMachineArn": "arn:aws:states:us-east-1:ACCOUNT_ID:stateMachine:PLACEHOLDER",
+    "TaskTokenTableName": "DocumentPro-ScanTaskTokens",
+    "StateMachineName": "document-processing-workflow"
+  }
+}

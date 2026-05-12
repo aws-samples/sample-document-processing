@@ -1,0 +1,230 @@
+{
+  "documentType": "invoice",
+  "description": "Field mapping for invoice document extraction. Vendor and wireTransfer are shared across all invoices. Each invoice has its own fields nested under the invoices array.",
+  "fields": [
+    {
+      "fieldKey": "vendor.name",
+      "fieldType": "string",
+      "description": "The company that ISSUED the invoice — appears at the top of the document as the sender/seller (e.g. Acme Corp). Do NOT confuse with the Bill To or Ship To party."
+    },
+    {
+      "fieldKey": "vendor.address",
+      "fieldType": "string",
+      "description": "Street address of the company that issued the invoice (the sender/seller)"
+    },
+    {
+      "fieldKey": "vendor.city",
+      "fieldType": "string",
+      "description": "City of the invoice issuer/seller"
+    },
+    {
+      "fieldKey": "vendor.state",
+      "fieldType": "string",
+      "description": "State abbreviation of the invoice issuer/seller"
+    },
+    {
+      "fieldKey": "vendor.zip",
+      "fieldType": "string",
+      "description": "ZIP code of the invoice issuer/seller"
+    },
+    {
+      "fieldKey": "vendor.phone",
+      "fieldType": "string",
+      "description": "Phone number of the invoice issuer/seller"
+    },
+    {
+      "fieldKey": "vendor.email",
+      "fieldType": "string",
+      "description": "Email address of the invoice issuer/seller"
+    },
+    {
+      "fieldKey": "invoices",
+      "fieldType": "array",
+      "description": "All invoices found in the document. A PDF may contain one or many invoices from the same vendor. Extract EVERY invoice — do not skip any.",
+      "items": [
+        {
+          "fieldKey": "invoiceNumber",
+          "fieldType": "string",
+          "description": "Invoice number or reference ID (e.g. INV-2024-00847)"
+        },
+        {
+          "fieldKey": "invoiceDate",
+          "fieldType": "string",
+          "description": "Date the invoice was issued (YYYY-MM-DD)"
+        },
+        {
+          "fieldKey": "dueDate",
+          "fieldType": "string",
+          "description": "Payment due date (YYYY-MM-DD)"
+        },
+        {
+          "fieldKey": "paymentTerms",
+          "fieldType": "string",
+          "description": "Payment terms (e.g. Net 30)"
+        },
+        {
+          "fieldKey": "purchaseOrder",
+          "fieldType": "string",
+          "description": "Purchase order number referenced on the invoice"
+        },
+        {
+          "fieldKey": "billTo.name",
+          "fieldType": "string",
+          "description": "The party RECEIVING the bill — found under the 'Bill To' section. This is the buyer/customer, NOT the vendor."
+        },
+        {
+          "fieldKey": "billTo.attention",
+          "fieldType": "string",
+          "description": "Attention line under the 'Bill To' section (e.g. Accounts Payable)"
+        },
+        {
+          "fieldKey": "billTo.address",
+          "fieldType": "string",
+          "description": "Street address under the 'Bill To' section"
+        },
+        {
+          "fieldKey": "billTo.city",
+          "fieldType": "string",
+          "description": "City under the 'Bill To' section"
+        },
+        {
+          "fieldKey": "billTo.state",
+          "fieldType": "string",
+          "description": "State abbreviation under the 'Bill To' section"
+        },
+        {
+          "fieldKey": "billTo.zip",
+          "fieldType": "string",
+          "description": "ZIP code under the 'Bill To' section"
+        },
+        {
+          "fieldKey": "shipTo.name",
+          "fieldType": "string",
+          "description": "The party RECEIVING the shipment — found under the 'Ship To' section"
+        },
+        {
+          "fieldKey": "shipTo.address",
+          "fieldType": "string",
+          "description": "Street address under the 'Ship To' section"
+        },
+        {
+          "fieldKey": "shipTo.city",
+          "fieldType": "string",
+          "description": "City under the 'Ship To' section"
+        },
+        {
+          "fieldKey": "shipTo.state",
+          "fieldType": "string",
+          "description": "State abbreviation under the 'Ship To' section"
+        },
+        {
+          "fieldKey": "shipTo.zip",
+          "fieldType": "string",
+          "description": "ZIP code under the 'Ship To' section"
+        },
+        {
+          "fieldKey": "lineItems",
+          "fieldType": "array",
+          "description": "List of line items for THIS invoice",
+          "items": [
+            {
+              "fieldKey": "lineNumber",
+              "fieldType": "integer",
+              "description": "Line item number"
+            },
+            {
+              "fieldKey": "description",
+              "fieldType": "string",
+              "description": "Product or service description"
+            },
+            {
+              "fieldKey": "sku",
+              "fieldType": "string",
+              "description": "Product code extracted from description (e.g. A-100, PB-200)"
+            },
+            {
+              "fieldKey": "quantity",
+              "fieldType": "integer",
+              "description": "Quantity ordered"
+            },
+            {
+              "fieldKey": "unitPrice",
+              "fieldType": "number",
+              "description": "Price per unit in USD"
+            },
+            {
+              "fieldKey": "taxPercent",
+              "fieldType": "number",
+              "description": "Tax percentage applied to line item (null if exempt)"
+            },
+            {
+              "fieldKey": "taxExempt",
+              "fieldType": "boolean",
+              "description": "Whether the line item is tax exempt"
+            },
+            {
+              "fieldKey": "amount",
+              "fieldType": "number",
+              "description": "Line item total (quantity x unitPrice)"
+            }
+          ]
+        },
+        {
+          "fieldKey": "subtotal",
+          "fieldType": "number",
+          "description": "Sum of all line item amounts before tax and shipping"
+        },
+        {
+          "fieldKey": "taxRate",
+          "fieldType": "number",
+          "description": "Overall tax rate percentage"
+        },
+        {
+          "fieldKey": "taxAmount",
+          "fieldType": "number",
+          "description": "Total tax amount in USD"
+        },
+        {
+          "fieldKey": "shipping",
+          "fieldType": "number",
+          "description": "Shipping and handling charges in USD"
+        },
+        {
+          "fieldKey": "totalDue",
+          "fieldType": "number",
+          "description": "Total amount due (subtotal + tax + shipping)"
+        },
+        {
+          "fieldKey": "notes",
+          "fieldType": "string",
+          "description": "Invoice notes, payment instructions, or additional remarks"
+        }
+      ]
+    },
+    {
+      "fieldKey": "wireTransfer.bankName",
+      "fieldType": "string",
+      "description": "Bank name for wire transfer payment"
+    },
+    {
+      "fieldKey": "wireTransfer.accountName",
+      "fieldType": "string",
+      "description": "Account holder name for wire transfer"
+    },
+    {
+      "fieldKey": "wireTransfer.accountNumber",
+      "fieldType": "string",
+      "description": "Bank account number (may be partially masked)"
+    },
+    {
+      "fieldKey": "wireTransfer.routingNumber",
+      "fieldType": "string",
+      "description": "Bank routing number"
+    },
+    {
+      "fieldKey": "wireTransfer.swiftCode",
+      "fieldType": "string",
+      "description": "SWIFT/BIC code for international transfers"
+    }
+  ]
+}

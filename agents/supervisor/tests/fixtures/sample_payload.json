@@ -1,0 +1,36 @@
+{
+  "pdfS3Path": "s3://document-processing-123456789012/uploads/test-doc-001/invoice-sample.pdf",
+  "customFields": [
+    {
+      "fieldKey": "invoice_number",
+      "fieldType": "string",
+      "description": "The invoice number or reference ID"
+    },
+    {
+      "fieldKey": "invoice_date",
+      "fieldType": "string",
+      "description": "The date the invoice was issued (YYYY-MM-DD format)"
+    },
+    {
+      "fieldKey": "vendor_name",
+      "fieldType": "string",
+      "description": "The name of the vendor or supplier"
+    },
+    {
+      "fieldKey": "total_amount",
+      "fieldType": "number",
+      "description": "The total invoice amount in USD"
+    },
+    {
+      "fieldKey": "line_items",
+      "fieldType": "array",
+      "description": "List of line items with description, quantity, and unit price"
+    }
+  ],
+  "schemaType": "invoice",
+  "lookupNames": ["vendor_codes"],
+  "ssmParams": {
+    "chunk_size": "5",
+    "pages_per_chunk": "10"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "LlmGatewayDatabaseStack": {
+    "ExportsOutputRefUiCredentials": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:document-processing/llm-gateway/ui-credentials-XXXXXX",
+    "MasterKeySecretArn": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:document-processing/llm-gateway/admin-key-XXXXXX",
+    "ExportsOutputRefLitellmSaltKey": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:document-processing/llm-gateway/salt-key-XXXXXX",
+    "DatabaseUrlSecretArn": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:document-processing/llm-gateway/database-url-XXXXXX",
+    "ExportsOutputRefDatabaseUrl": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:document-processing/llm-gateway/database-url-XXXXXX",
+    "DbClusterEndpoint": "llm-gateway-db.cluster-XXXXXXXXXXXX.us-east-1.rds.amazonaws.com",
+    "ExportsOutputRefLitellmMasterKey": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:document-processing/llm-gateway/admin-key-XXXXXX"
+  },
+  "LlmGatewayStack": {
+    "AlbDnsName": "internal-LlmGat-Alb-XXXXXXXXXXXX-0000000000.us-east-1.elb.amazonaws.com",
+    "ExportsOutputFnGetAttServiceName": "llm-gateway-service",
+    "ServiceName": "llm-gateway-service",
+    "ExportsOutputRefLogGroup": "/document-processing/llm-gateway",
+    "CloudFrontDistributionId": "XXXXXXXXXXXXXX",
+    "ClusterName": "llm-gateway",
+    "ExportsOutputRefCluster": "llm-gateway",
+    "ExportsOutputFnGetAttAlbLoadBalancerFullName": "app/LlmGat-Alb-XXXXXXXXXXXX/XXXXXXXXXXXXXXXX",
+    "CloudFrontDomain": "XXXXXXXXXXXX.cloudfront.net"
+  }
+}

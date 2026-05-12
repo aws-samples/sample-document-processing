@@ -1,0 +1,7 @@
+{
+  "DocProcessingUiStack": {
+    "BucketName": "document-processing-ui-ACCOUNT_ID",
+    "DistributionId": "XXXXXXXXXXXXXX",
+    "CloudFrontDomain": "XXXXXXXXXXXX.cloudfront.net"
+  }
+}

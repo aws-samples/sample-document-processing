@@ -1,0 +1,10 @@
+{
+  "DocProcessingBackendStack": {
+    "WebSocketApiUrl": "wss://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/dev",
+    "DocumentsTableName": "DocumentProcessing-Documents",
+    "RestApiEndpoint": "https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/dev/",
+    "NotifyFunctionArn": "arn:aws:lambda:us-east-1:ACCOUNT_ID:function:document-processing-notify_websocket",
+    "ConnectionsTableName": "DocumentProcessing-WebSocketConnections",
+    "RestApiUrl": "https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/dev/"
+  }
+}
